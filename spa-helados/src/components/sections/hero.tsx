@@ -14,7 +14,7 @@ export function Hero() {
                 <div className="relative  mx-auto aspect-square w-full max-w-2xl order-0 md:order-0">
                     <div className="absolute inset-0 rounded-full bg-(--primary)/20 blur-3xl" />
                     <Image
-                        src="/helados-alegria-no-bg.png"
+                        src="/helados-no-bg.png"
                         alt="Elote preparado La Mazorquita"
                         fill
                         sizes="100vw"
