@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+:root {
+  --radius: 1rem;
+
+  /* Rosa chicle — como el fondo del logo */
+  --background: oklch(88.003% 0.07418 351.426);
+  --foreground: oklch(100% 0.00011 271.152);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.32 0.15 350);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.32 0.15 350);
+
+  /* Rosa fuerte/magenta del logo — protagonista */
+  --primary: oklch(74.697% 0.23588 333.104);
+  --primary-foreground: oklch(0.99 0.01 20);
+  --primary-glow: oklch(66.607% 0.25028 348.517);
+
+  --secondary: oklch(0.95 0.02 350);
+  --secondary-foreground: oklch(0.32 0.15 350);
+  --muted: oklch(0.96 0.015 340);
+  --muted-foreground: oklch(0.4 0.03 340);
+
+  /* Turquesa del banner "DE FRUTA NATURAL" */
+  --accent: oklch(0.7 0.115 185);
+  --accent-foreground: oklch(0.99 0.01 20);
+
+  /* Morado del banner inferior */
+  --destructive: oklch(0.38 0.1 335);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  --success: oklch(0.7 0.115 185);
+  --success-foreground: oklch(0.98 0 0);
+  --warning: oklch(0.84 0.15 85);
+  --warning-foreground: oklch(0.28 0.08 40);
+
+  --border: oklch(71.834% 0.17908 343.608);
+  --input: oklch(0.93 0.04 340);
+  --ring: oklch(0.6182 0.2378 357.4);
+
+  /* Colores por sabor, tomados directo del logo */
+  --chart-1: oklch(0.78 0.16 60);
+  /* mango */
+  --chart-2: oklch(0.3 0.02 60);
+  /* oreo */
+  --chart-3: oklch(0.7 0.115 185);
+  /* coco */
+  --chart-4: oklch(0.42 0.09 40);
+  /* ciruela/café */
+  --chart-5: oklch(0.72 0.19 0);
+  /* fresa */
+
+  --sidebar: oklch(0.96 0.02 350);
+  --sidebar-foreground: oklch(0.32 0.15 350);
+  --sidebar-primary: oklch(0.6182 0.2378 357.4);
+  --sidebar-primary-foreground: oklch(0.99 0.01 20);
+  --sidebar-accent: oklch(0.88 0.06 185);
+  --sidebar-accent-foreground: oklch(0.28 0.08 340);
+  --sidebar-border: oklch(0.88 0.05 340);
+  --sidebar-ring: oklch(0.6182 0.2378 357.4);
+
+  /* Gradientes y sombras */
+  --gradient-primary: linear-gradient(135deg, oklch(62.584% 0.17984 347.308 / 0.61), oklch(0.45 0.18 340));
+  --gradient-white: linear-gradient(135deg, oklch(100% 0.00011 271.152), oklch(96.786% 0.02244 336.571));
+  --gradient-mango: linear-gradient(135deg, #FFD54A 0%, #FDBE02 50%, #E8890C 100%);
+  --gradient-fresa: linear-gradient(135deg, #FF9EB5 0%, #E85D75 50%, #2B1810 100%);
+  --gradient-ciruela:linear-gradient(135deg, #8c897a 0%, #78715e 60%, #908668 100%);
+  --gradient-coco:linear-gradient(135deg, #889189 0%, #E8F5EC 40%, #1E7A4D 100%);
+  --gradient-oreo:linear-gradient(135deg, #3A3A3A 0%, #1A1A1A 45%, #a7a5a2 45%, #FFFFFF 100%);
+  --gradient-cafe:linear-gradient(135deg, #8B5A2B 0%, #5C3A1E 60%, #2B1810 100%);
+  --gradient-radial: radial-gradient(circle at top left, oklch(0.85 0.12 340 / 0.4), transparent 60%);
+  --gradient-card: linear-gradient(155deg, oklch(1 0 0 / 0.95), oklch(0.96 0.02 350 / 0.75));
+  --gradient-mesh:
+    radial-gradient(at 15% 15%, oklch(87.855% 0.07637 349.99 / 0.74), transparent 80%),
+    radial-gradient(at 85% 25%, oklch(87.905% 0.08114 332.197 / 0.67), transparent 55%),
+    radial-gradient(at 50% 95%, oklch(88.718% 0.07276 347.093 / 0.727), transparent 60%);
+  --shadow-glow: 0 20px 60px -20px oklch(0.6182 0.2378 357.4 / 0.4);
+  --shadow-elegant: 0 30px 80px -30px oklch(0.32 0.15 350 / 0.3);
+  --shadow-inner-glow: inset 0 1px 0 0 oklch(1 0 0 / 0.6);
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-glow: var(--primary-glow);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: var(--gradient-mesh);
+  background-attachment: fixed;
+}
+
+@utility text-gradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-white {
+  background: var(--gradient-white);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
+@utility text-gradient-mango {
+  background: var(--gradient-mango);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+
+@utility text-gradient-fresa {
+  background: var(--gradient-fresa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-ciruela {
+  background: var(--gradient-ciruela);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-cafe {
+  background: var(--gradient-cafe);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-oreo {
+  background: var(--gradient-oreo);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility text-gradient-coco {
+  background: var(--gradient-coco);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
