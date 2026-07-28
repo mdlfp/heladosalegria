@@ -40,14 +40,14 @@ async function fetchAPI<T>(
 
 function normalizeImage(image: any) {
   if (!image) return undefined;
+
   return {
-    url: `${STRAPI_URL}${image.url}`,
+    url: new URL(image.url, STRAPI_URL).toString(),
     alternativeText: image.alternativeText ?? undefined,
     width: image.width,
     height: image.height,
   };
 }
-
 // ---- Funciones específicas ----
 
 export async function getProducts(): Promise<Product[]> {
