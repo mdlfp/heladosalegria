@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: "api.heladosalegria.com.mx",
+      },
+      {
+        protocol: "https",
         hostname: "heladosalegria-production.up.railway.app",
       },
     ],
