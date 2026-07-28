@@ -52,7 +52,7 @@ function MenuItemCard({ item, offset }: { item: Product; offset: number }) {
         pointerEvents: isCenter ? "auto" : "none",
       }}
     >
-      <div className="relative overflow-hidden rounded-3xl shadow-lg bg-card flex flex-col items-center p-5 text-center">
+      <div className="relative mb-15 overflow-hidden rounded-3xl shadow-lg bg-card flex flex-col items-center p-5 text-center">
         <div className="relative w-70 h-70 mb-3 md:w-120 md:h-120">
           <Image
             src={imageUrl}
@@ -161,7 +161,7 @@ export function MenuCarousel({ items }: { items: Product[] }) {
         </button>
       </div>
 
-      <div className="mt-6 flex justify-center gap-2">
+      <div className="mt-14 flex justify-center gap-2">
         {items.map((item, i) => (
           <button
             key={item.id}

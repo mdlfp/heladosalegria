@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { getConfig } from "@/lib/strapi";
+import { getConfig, getSeo } from "@/lib/strapi";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,38 +21,40 @@ const kalam = Kalam({ subsets: ["latin"], weight: ["700"], variable: "--font-kal
 const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const config = await getConfig();
+  const [config, seo] = await Promise.all([getConfig(), getSeo()]);
   const siteUrl = config.siteUrl ?? "https://heladosalegria.com.mx";
-  const title = `${config.bussinesName} | Helados Artesanales en Ensenada`;
+
+  const title = seo.siteTitle;
+  const description = seo.metaDescription;
+  const ogTitle = seo.ogTitle ?? title;
+  const ogDescription = seo.ogDescription ?? description;
+  const ogImageUrl = seo.ogImage?.url ?? "/og-image.jpg";
+  const ogImageAlt = seo.ogImageAlt ?? `${config.bussinesName}`;
+  const keywords = seo.keywords
+    ? seo.keywords.split(",").map((k) => k.trim())
+    : undefined;
 
   return {
     metadataBase: new URL(siteUrl),
     title: {
       default: title,
-      template: `%s | ${config.bussinesName}`,
+      template: seo.titleTemplate ?? `%s | ${config.bussinesName}`,
     },
-    description:
-      "Los mejores helados artesanales de fruta natural en Ensenada. Mango, coco, oreo, ciruela, fresa, café y más, con el topping que más te guste.",
-    keywords: [
-      "helados Ensenada",
-      "helados artesanales Ensenada",
-      "helados de fruta natural",
-      "paletas Ensenada",
-      config.bussinesName,
-    ],
+    description,
+    keywords,
     authors: [{ name: config.bussinesName }],
+    icons: seo.favicon ? { icon: seo.favicon.url } : undefined,
     openGraph: {
-      title,
-      description:
-        "Los mejores helados artesanales de fruta natural en Ensenada, hechos con ingredientes 100% naturales.",
+      title: ogTitle,
+      description: ogDescription,
       url: siteUrl,
       siteName: config.bussinesName,
       images: [
         {
-          url: "/og-image.jpg",
+          url: ogImageUrl,
           width: 1200,
           height: 630,
-          alt: `Helados artesanales ${config.bussinesName}`,
+          alt: ogImageAlt,
         },
       ],
       locale: "es_MX",
@@ -60,9 +62,9 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description: "Los mejores helados artesanales de fruta natural en Ensenada.",
-      images: ["/og-image.jpg"],
+      title: ogTitle,
+      description: ogDescription,
+      images: [ogImageUrl],
     },
     robots: {
       index: true,

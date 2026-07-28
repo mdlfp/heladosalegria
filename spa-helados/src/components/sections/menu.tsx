@@ -10,7 +10,7 @@ export async function Menu() {
 
   return (
     <section id="menu" className="px-4 py-16 md:px-6">
-      <h2 className="text-gradient-white mb-10 text-center text-7xl">
+      <h2 className="text-gradient-white mb-30 text-center text-7xl">
         Nuestros Sabores
       </h2>
 

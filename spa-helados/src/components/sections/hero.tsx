@@ -1,10 +1,12 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { getHero } from "@/lib/strapi";
+import { getHero, getConfig } from "@/lib/strapi";
+import { withWhatsAppMessage } from "@/lib/whatsapp";
 
 export async function Hero() {
-  const hero = await getHero();
+  const [hero, config] = await Promise.all([getHero(), getConfig()]);
+  const whatsappHref = withWhatsAppMessage(hero.ctaLink, config.whatsappMessage);
 
   return (
     <section
@@ -47,7 +49,7 @@ export async function Hero() {
                 Ver Sabores
               </Button>
             </Link>
-            <Link href={hero.ctaLink} target="_blank" rel="noopener noreferrer">
+            <Link href={whatsappHref} target="_blank" rel="noopener noreferrer">
               <Button variant="whatsFull" size="lg">
                 {hero.ctaText}
               </Button>

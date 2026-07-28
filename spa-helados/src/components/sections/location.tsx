@@ -29,7 +29,7 @@ export async function Location() {
               <h3 className="text-xl font-bold text-card-foreground">
                 {config.bussinesName}
               </h3>
-              {config.rating != null && (
+              {config.rating != null && config.rating > 0 && (
                 <div className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
                   <span className="font-semibold text-primary">
                     ★ {config.rating}

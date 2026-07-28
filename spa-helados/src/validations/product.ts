@@ -24,9 +24,9 @@ export type VariantFormValues = z.infer<typeof variantFormSchema>;
 
 export const imageSchema = z.object({
   url: z.string(),
-  alternativeText: z.string().nullable().optional(),
-  width: z.number().optional(),
-  height: z.number().optional(),
+  alternativeText: z.string().nullish(),
+  width: z.number().nullish(),
+  height: z.number().nullish(),
 });
 
 export type ProductImage = z.infer<typeof imageSchema>;

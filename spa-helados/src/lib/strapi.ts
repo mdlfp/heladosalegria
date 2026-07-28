@@ -5,6 +5,7 @@ import { productSchema, type Product } from "@/validations/product";
 import { categorySchema, type Category } from "@/validations/category";
 import { heroSchema, type Hero } from "@/validations/hero";
 import { configSchema, type Config } from "@/validations/config";
+import { seoSchema, type Seo } from "@/validations/seo";
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337";
 
@@ -12,13 +13,17 @@ const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
 
 async function fetchAPI<T>(
   path: string,
-  urlParamsObject: Record<string, any> = {}
+  urlParamsObject: Record<string, any> = {},
+  tags: string[] = []
 ): Promise<T> {
   const queryString = new URLSearchParams(urlParamsObject as any).toString();
   const url = `${STRAPI_URL}/api${path}${queryString ? `?${queryString}` : ""}`;
 
   const res = await fetch(url, {
-    cache: "no-store", // ajusta según tu estrategia de cache
+    // Cachea indefinidamente hasta que se invalide por tag (ver
+    // app/api/revalidate/route.ts) -- así no le pegamos a Strapi en
+    // cada visita, solo cuando algo realmente cambió.
+    next: { tags },
   });
 
   if (!res.ok) {
@@ -46,7 +51,11 @@ function normalizeImage(image: any) {
 // ---- Funciones específicas ----
 
 export async function getProducts(): Promise<Product[]> {
-  const data = await fetchAPI<any[]>("/products", { populate: "*" });
+  const data = await fetchAPI<any[]>(
+    "/products",
+    { populate: "*" },
+    ["products"]
+  );
   return data.map((item) =>
     productSchema.parse({
       ...item,
@@ -56,10 +65,11 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  const data = await fetchAPI<any[]>("/products", {
-    "filters[slug][$eq]": slug,
-    populate: "*",
-  });
+  const data = await fetchAPI<any[]>(
+    "/products",
+    { "filters[slug][$eq]": slug, populate: "*" },
+    ["products"]
+  );
 
   if (!data || data.length === 0) return null;
 
@@ -70,12 +80,16 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 }
 
 export async function getCategories(): Promise<Category[]> {
-  const data = await fetchAPI<any[]>("/categories", { populate: "*" });
+  const data = await fetchAPI<any[]>(
+    "/categories",
+    { populate: "*" },
+    ["categories"]
+  );
   return data.map((item) => categorySchema.parse(item));
 }
 
 export async function getHero(): Promise<Hero> {
-  const data = await fetchAPI<any>("/hero", { populate: "*" });
+  const data = await fetchAPI<any>("/hero", { populate: "*" }, ["hero"]);
   return heroSchema.parse({
     ...data,
     image: normalizeImage(data.image),
@@ -83,7 +97,7 @@ export async function getHero(): Promise<Hero> {
 }
 
 export async function getConfig(): Promise<Config> {
-  const data = await fetchAPI<any>("/config", { populate: "*" });
+  const data = await fetchAPI<any>("/config", { populate: "*" }, ["config"]);
   return configSchema.parse({
     ...data,
     // Descarta entradas de horario incompletas (ej. un renglón que se
@@ -92,5 +106,14 @@ export async function getConfig(): Promise<Config> {
     openingHours: (data.openingHours ?? []).filter(
       (oh: any) => oh?.dayOfWeek && oh?.opens && oh?.closes
     ),
+  });
+}
+
+export async function getSeo(): Promise<Seo> {
+  const data = await fetchAPI<any>("/seo", { populate: "*" }, ["seo"]);
+  return seoSchema.parse({
+    ...data,
+    favicon: normalizeImage(data.favicon),
+    ogImage: normalizeImage(data.ogImage),
   });
 }
