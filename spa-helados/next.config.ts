@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "heladosalegria-production.up.railway.app",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com"
+      }
     ],
   },
 };
