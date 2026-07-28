@@ -7,8 +7,6 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "heladosalegria-production.up.railway.app",
-        port: "1337",
-        pathname: "/uploads/**",
       },
     ],
   },
