@@ -1,53 +1,69 @@
-import { BUSINESS } from "@/lib/constants";
+import { getConfig, getHero } from "@/lib/strapi";
 
-export function JsonLd() {
+// Convierte "12:00:00.000" -> "12:00" (formato 24h que espera schema.org)
+function toShortTime(time: string): string {
+  return time.slice(0, 5);
+}
+
+export async function JsonLd() {
+  const [config, hero] = await Promise.all([getConfig(), getHero()]);
+  const siteUrl = config.siteUrl ?? "https://heladosalegria.com.mx";
+
+  // Agrupa los días que comparten el mismo horario en una sola entrada
+  const grouped = new Map<string, string[]>();
+  for (const oh of config.openingHours) {
+    const key = `${oh.opens}|${oh.closes}`;
+    const days = grouped.get(key) ?? [];
+    days.push(oh.dayOfWeek);
+    grouped.set(key, days);
+  }
+  const openingHoursSpecification = Array.from(grouped.entries()).map(
+    ([key, dayOfWeek]) => {
+      const [opens, closes] = key.split("|");
+      return {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek,
+        opens: toShortTime(opens),
+        closes: toShortTime(closes),
+      };
+    }
+  );
+
+  const sameAs = [config.facebook, config.instagram].filter(
+    (url): url is string => Boolean(url)
+  );
+
   const data = {
     "@context": "https://schema.org",
-    "@type": "FoodEstablishment",
-    name: "La Mazorquita",
-    image: `${BUSINESS.siteUrl}/logo-nobg-lamazorquita.png`,
-    "@id": BUSINESS.siteUrl,
-    url: BUSINESS.siteUrl,
-    telephone: "+526461234567",
+    "@type": "IceCreamShop",
+    name: config.bussinesName,
+    image: hero.image.url,
+    "@id": siteUrl,
+    url: siteUrl,
+    telephone: `+52${config.whatsappNumber}`,
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Av. Delante 2061, Hidalgo",
-      addressLocality: "Ensenada",
-      addressRegion: "BC",
-      postalCode: "22880",
+      streetAddress: config.streetAddress ?? undefined,
+      addressLocality: config.addressLocality ?? undefined,
+      addressRegion: config.addressRegion ?? undefined,
+      postalCode: config.postalCode ?? undefined,
       addressCountry: "MX",
     },
     geo: {
       "@type": "GeoCoordinates",
-      latitude: 31.853723,
-      longitude: -116.5868604,
+      latitude: config.lat,
+      longitude: config.lng,
     },
-    servesCuisine: "Mexicana",
-    priceRange: "$$",
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-          "Sunday",
-        ],
-        opens: "17:00",
-        closes: "22:00",
+    priceRange: config.priceRange ?? undefined,
+    openingHoursSpecification,
+    ...(config.rating != null && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: String(config.rating),
+        reviewCount: String(config.ratingCount ?? 0),
       },
-    ],
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.7",
-      reviewCount: "34",
-    },
-    sameAs: [
-      BUSINESS.facebook,
-      BUSINESS.instagram,
-    ],
+    }),
+    ...(sameAs.length > 0 && { sameAs }),
   };
 
   return (

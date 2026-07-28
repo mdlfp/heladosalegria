@@ -1,0 +1,73 @@
+{
+  "kind": "singleType",
+  "collectionName": "configs",
+  "info": {
+    "singularName": "config",
+    "pluralName": "configs",
+    "displayName": "Config"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "bussinesName": {
+      "type": "string",
+      "required": true
+    },
+    "whatsappNumber": {
+      "type": "string",
+      "required": false
+    },
+    "whatsappMessage": {
+      "type": "string"
+    },
+    "lat": {
+      "type": "decimal"
+    },
+    "lng": {
+      "type": "decimal"
+    },
+    "mapsUrl": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "facebook": {
+      "type": "string"
+    },
+    "instagram": {
+      "type": "string"
+    },
+    "siteUrl": {
+      "type": "string"
+    },
+    "rating": {
+      "type": "decimal"
+    },
+    "ratingCount": {
+      "type": "integer"
+    },
+    "streetAddress": {
+      "type": "string"
+    },
+    "addressLocality": {
+      "type": "string"
+    },
+    "addressRegion": {
+      "type": "string"
+    },
+    "postalCode": {
+      "type": "string"
+    },
+    "priceRange": {
+      "type": "string"
+    },
+    "openingHours": {
+      "type": "component",
+      "component": "bussine.opening-hours",
+      "repeatable": true
+    }
+  }
+}

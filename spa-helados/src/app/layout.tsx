@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { BUSINESS } from "@/lib/constants";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { getConfig } from "@/lib/strapi";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,56 +20,59 @@ const fredoka = Fredoka({ subsets: ["latin"], variable: "--font-fredoka" });
 const kalam = Kalam({ subsets: ["latin"], weight: ["700"], variable: "--font-kalam" });
 const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
 
+export async function generateMetadata(): Promise<Metadata> {
+  const config = await getConfig();
+  const siteUrl = config.siteUrl ?? "https://heladosalegria.com.mx";
+  const title = `${config.bussinesName} | Helados Artesanales en Ensenada`;
 
-export const metadata: Metadata = {
-  metadataBase: new URL(BUSINESS.siteUrl),
-  title: {
-    default: "La Mazorquita | Elotes Preparados en Ensenada",
-    template: "%s | La Mazorquita",
-  },
-  description:
-    "Los mejores elotes preparados en Ensenada. Elote entero, en vaso, esquites, tostielotes, dorilocos y más. Martes a Domingo de 5pm a 10pm.",
-  keywords: [
-    "elotes Ensenada",
-    "elotes preparados Ensenada",
-    "esquites Ensenada",
-    "tostilocos Ensenada",
-    "comida callejera Ensenada",
-    "La Mazorquita",
-  ],
-  authors: [{ name: "La Mazorquita" }],
-  openGraph: {
-    title: "La Mazorquita | Elotes Preparados en Ensenada",
+  return {
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: title,
+      template: `%s | ${config.bussinesName}`,
+    },
     description:
-      "Los mejores elotes preparados en Ensenada, hechos al momento con el toque que más te gusta.",
-    url: BUSINESS.siteUrl,
-    siteName: "La Mazorquita",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Elotes preparados La Mazorquita",
-      },
+      "Los mejores helados artesanales de fruta natural en Ensenada. Mango, coco, oreo, ciruela, fresa, café y más, con el topping que más te guste.",
+    keywords: [
+      "helados Ensenada",
+      "helados artesanales Ensenada",
+      "helados de fruta natural",
+      "paletas Ensenada",
+      config.bussinesName,
     ],
-    locale: "es_MX",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "La Mazorquita | Elotes Preparados en Ensenada",
-    description: "Los mejores elotes preparados en Ensenada.",
-    images: ["/og-image.jpg"],
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-  alternates: {
-    canonical: BUSINESS.siteUrl,
-  },
-};
-
+    authors: [{ name: config.bussinesName }],
+    openGraph: {
+      title,
+      description:
+        "Los mejores helados artesanales de fruta natural en Ensenada, hechos con ingredientes 100% naturales.",
+      url: siteUrl,
+      siteName: config.bussinesName,
+      images: [
+        {
+          url: "/og-image.jpg",
+          width: 1200,
+          height: 630,
+          alt: `Helados artesanales ${config.bussinesName}`,
+        },
+      ],
+      locale: "es_MX",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: "Los mejores helados artesanales de fruta natural en Ensenada.",
+      images: ["/og-image.jpg"],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+    alternates: {
+      canonical: siteUrl,
+    },
+  };
+}
 
 export default function RootLayout({
   children,

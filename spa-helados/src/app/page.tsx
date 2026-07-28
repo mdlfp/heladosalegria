@@ -1,8 +1,7 @@
-'use client'
+// 'use client'
 
 import Image from "next/image";
 import { MeshBackground } from "@/components/background/meshbg";
-import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/navbar";
 import { Hero } from "@/components/sections/hero";
 import { Menu } from "@/components/sections/menu";

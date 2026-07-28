@@ -1,9 +1,14 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { BUSINESS } from "@/lib/constants";
+import { getConfig } from "@/lib/strapi";
+import { formatSchedule, formatAddress } from "@/lib/format";
 
-export function Location() {
-  const mapEmbedSrc = `https://www.google.com/maps?q=Helados+Alegria/${BUSINESS.lat},${BUSINESS.lng}&z=16&output=embed`;
+export async function Location() {
+  const config = await getConfig();
+
+  const mapEmbedSrc = `https://www.google.com/maps?q=Helados+Alegria/${config.lat},${config.lng}&z=16&output=embed`;
+  const schedule = formatSchedule(config);
+  const address = formatAddress(config);
 
   return (
     <section id="ubicacion" className="mx-auto max-w-6xl px-4 py-20 md:px-6">
@@ -22,31 +27,35 @@ export function Location() {
           <div className="flex flex-col gap-6">
             <div>
               <h3 className="text-xl font-bold text-card-foreground">
-                {BUSINESS.name}
+                {config.bussinesName}
               </h3>
-              <div className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
-                <span className="font-semibold text-primary">
-                  ★ {BUSINESS.rating}
-                </span>
-                <span>({BUSINESS.ratingCount} reseñas en Google)</span>
-              </div>
+              {config.rating != null && (
+                <div className="mt-1 flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <span className="font-semibold text-primary">
+                    ★ {config.rating}
+                  </span>
+                  {config.ratingCount != null && (
+                    <span>({config.ratingCount} reseñas en Google)</span>
+                  )}
+                </div>
+              )}
             </div>
 
-            <div>
-              <h4 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                Dirección
-              </h4>
-              <p className="text-card-foreground">
-                {BUSINESS.address}
-              </p>
-            </div>
+            {address && (
+              <div>
+                <h4 className="mb-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                  Dirección
+                </h4>
+                <p className="text-card-foreground">{address}</p>
+              </div>
+            )}
 
             <div>
               <h4 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                 Horario
               </h4>
               <ul className="flex flex-col gap-1">
-                {BUSINESS.schedule.map((item) => (
+                {schedule.map((item) => (
                   <li
                     key={item.day}
                     className="flex justify-between border-b border-border py-1.5 text-sm last:border-0"
@@ -68,32 +77,38 @@ export function Location() {
               </ul>
             </div>
 
-            <div>
-              <h4 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                Síguenos
-              </h4>
-              <div className="flex gap-3">
-                <Link
-                  href={BUSINESS.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden rounded-full bg-blue-500 sm:bg-secondary text-accent-foreground px-4 py-2 text-sm font-semibold sm:text-secondary-foreground transition-colors hover:bg-blue-500 hover:text-accent-foreground"
-                >
-                  Facebook
-                </Link>
-                <Link
-                  href={BUSINESS.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full bg-linear-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] sm:bg-none sm:bg-secondary text-accent-foreground sm:text-secondary-foreground px-4 py-2 text-sm font-semibold transition-colors hover:bg-linear-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:text-accent-foreground "
-                >
-                  Instagram
-                </Link>
+            {(config.facebook || config.instagram) && (
+              <div>
+                <h4 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                  Síguenos
+                </h4>
+                <div className="flex gap-3">
+                  {config.facebook && (
+                    <Link
+                      href={config.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hidden rounded-full bg-blue-500 sm:bg-secondary text-accent-foreground px-4 py-2 text-sm font-semibold sm:text-secondary-foreground transition-colors hover:bg-blue-500 hover:text-accent-foreground"
+                    >
+                      Facebook
+                    </Link>
+                  )}
+                  {config.instagram && (
+                    <Link
+                      href={config.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full bg-linear-to-r from-[#833ab4] via-[#fd1d1d] to-[#fcb045] sm:bg-none sm:bg-secondary text-accent-foreground sm:text-secondary-foreground px-4 py-2 text-sm font-semibold transition-colors hover:bg-linear-to-r hover:from-[#833ab4] hover:via-[#fd1d1d] hover:to-[#fcb045] hover:text-accent-foreground "
+                    >
+                      Instagram
+                    </Link>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
-          <Link href={BUSINESS.mapsUrl} target="_blank" rel="noopener noreferrer">
+          <Link href={config.mapsUrl} target="_blank" rel="noopener noreferrer">
             <Button variant="primary" size="lg" className="w-full">
               Cómo llegar
             </Button>
@@ -109,7 +124,7 @@ export function Location() {
             style={{ border: 0, minHeight: 320 }}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title={`Ubicación de ${BUSINESS.name}`}
+            title={`Ubicación de ${config.bussinesName}`}
           />
         </div>
       </div>

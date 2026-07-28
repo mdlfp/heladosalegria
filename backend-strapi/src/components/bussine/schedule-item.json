@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_bussine_schedule_items",
+  "info": {
+    "displayName": "schedule_item",
+    "icon": "calendar"
+  },
+  "options": {},
+  "attributes": {
+    "day": {
+      "type": "string",
+      "required": true
+    },
+    "hours": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "config": {}
+}

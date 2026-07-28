@@ -1,11 +1,13 @@
 import { MetadataRoute } from "next";
+import { getConfig } from "@/lib/strapi";
 
-import { BUSINESS } from "@/lib/constants";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const config = await getConfig();
+  const siteUrl = config.siteUrl ?? "https://heladosalegria.com.mx";
 
-export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: BUSINESS.siteUrl,
+      url: siteUrl,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
