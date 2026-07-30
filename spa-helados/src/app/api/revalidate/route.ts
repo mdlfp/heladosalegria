@@ -8,6 +8,7 @@ const MODEL_TAG_MAP: Record<string, string[]> = {
   category: ["categories"],
   hero: ["hero"],
   config: ["config"],
+  seo: ["seo"],
 };
 
 export async function POST(request: NextRequest) {
