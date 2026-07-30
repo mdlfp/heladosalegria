@@ -43,7 +43,7 @@ function MenuItemCard({ item, offset }: { item: Product; offset: number }) {
 
   return (
     <div
-      className="absolute left-1/2 top-1/2 w-70 md:w-120 transition-all duration-500 ease-out"
+      className=" absolute left-1/2 top-1/2 w-70 md:w-120 transition-all duration-500 ease-out"
       style={{
         transform: `translate(-50%, -50%) translateX(${offset * 75}%) scale(${isCenter ? 1 : 0.7
           })`,
@@ -108,6 +108,7 @@ export function MenuCarousel({ items }: { items: Product[] }) {
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = e.touches[0].clientX; // evita distancia falsa cuando es un tap sin arrastre
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -131,13 +132,14 @@ export function MenuCarousel({ items }: { items: Product[] }) {
   return (
     <>
       <div
-        className="relative overflow-hidden touch-pan-y mx-auto flex h-130 md:h-160 max-w-2xl items-center justify-center md:overflow-visible md:touch-auto"
+        className="relative touch-pan-y mx-auto flex h-130 md:h-160 max-w-2xl items-center justify-center md:overflow-visible md:touch-auto"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         <button
           onClick={goPrev}
+          onTouchStart={(e) => e.stopPropagation()}
           aria-label="Sabor anterior"
           className="absolute left-0 z-30 shrink-0 rounded-full bg-card p-2 shadow-md transition hover:bg-secondary"
         >
@@ -154,6 +156,7 @@ export function MenuCarousel({ items }: { items: Product[] }) {
 
         <button
           onClick={goNext}
+          onTouchStart={(e) => e.stopPropagation()}
           aria-label="Siguiente sabor"
           className="absolute right-0 z-30 shrink-0 rounded-full bg-card p-2 shadow-md transition hover:bg-secondary"
         >

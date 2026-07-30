@@ -29,11 +29,27 @@ export function NavbarClient({
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    const scrollToSection = (href: string) => {
+        const id = href.replace("#", "");
+        const el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
+            window.history.pushState(null, "", href);
+        }
+    };
+
     return (
         <header className="fixed z-50 left-0 right-0 top-0 border-b border-border bg-(--background)/60 backdrop-blur-md">
             <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
                 {/* Logo */}
-                <Link href="#inicio" className="flex items-center gap-2">
+                <Link
+                    href="#inicio"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        scrollToSection("#inicio");
+                    }}
+                    className="flex items-center gap-2"
+                >
                     <Image
                         src="/logo-helados.png"
                         alt={`Logo de ${businessName}`}
@@ -57,6 +73,10 @@ export function NavbarClient({
                         <li key={link.href}>
                             <Link
                                 href={link.href}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    scrollToSection(link.href);
+                                }}
                                 className="text-base font-medium text-pink-900  transition-colors hover:text-primary"
                             >
                                 {link.label}
@@ -106,9 +126,12 @@ export function NavbarClient({
                         {NAV_LINKS.map((link) => (
                             <li key={link.href}>
                                 <Link
-
                                     href={link.href}
-                                    onClick={() => setIsOpen(false)}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setIsOpen(false);
+                                        scrollToSection(link.href);
+                                    }}
                                     className="block text-base font-medium text-foreground"
                                 >
                                     {link.label}
