@@ -9,7 +9,7 @@ export async function Menu() {
   const products = await getProducts();
 
   return (
-    <section id="menu" className="px-4 py-16 md:px-6">
+    <section id="menu" className="px-4 py-16 md:px-6 overflow-hidden">
       <h2 className="text-gradient-white mb-30 text-center text-7xl">
         Nuestros Sabores
       </h2>
