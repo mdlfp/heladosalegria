@@ -88,7 +88,7 @@ export async function Location() {
                       href={config.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hidden rounded-full bg-blue-500 sm:bg-secondary text-accent-foreground px-4 py-2 text-sm font-semibold sm:text-secondary-foreground transition-colors hover:bg-blue-500 hover:text-accent-foreground"
+                      className="rounded-full bg-blue-500 sm:bg-secondary text-accent-foreground px-4 py-2 text-sm font-semibold sm:text-secondary-foreground transition-colors hover:bg-blue-500 hover:text-accent-foreground"
                     >
                       Facebook
                     </Link>
